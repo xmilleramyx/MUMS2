@@ -1,0 +1,260 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  	<meta charset="UTF-8">
+	<title>Profile</title>
+	<meta name=“viewport” content=“width=device-width, intitial-scale=1.0”>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+  	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="bootstrap.css">
+	<link rel="javascript" type="text/javascript" href="bootstrap.min.js">
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"> 
+  	<link rel="stylesheet" href="css/login.css">
+
+  	<script>/*credit to https://gist.github.com/anantn/4323949 -- Firebase: Detecting 
+  			if data exists. This snippet detects if a user ID is already taken*/
+
+		function go() {
+		  var userId = prompt('Username?', 'Guest');
+		  checkIfUserExists(userId);
+		}
+
+		var USERS_LOCATION = 'https://SampleChat.firebaseIO-demo.com/users';
+
+		function userExistsCallback(userId, exists) {
+		  if (exists) {
+		    alert('user ' + userId + ' exists!');
+		  } else {
+		    alert('user ' + userId + ' does not exist!');
+		  }
+		}
+
+		// Tests to see if /users/<userId> has any data. 
+		function checkIfUserExists(userId) {
+		  var usersRef = new Firebase(USERS_LOCATION);
+		  usersRef.child(userId).once('value', function(snapshot) {
+		    var exists = (snapshot.val() !== null);
+		    userExistsCallback(userId, exists);
+		  });
+		}
+
+
+/*OR THIS CODE by lgomez in the comments
+					// The ideantifier in the collection.
+			var uid = 2;
+			// the data for the object being created/updated.
+			var user = {
+			    name: "Luis",
+			    twitter: "@luisgo"
+			};
+			// attempt to get the child in the collection by uid.
+			db.child('users').child(uid).once('value', function(snapshot){
+			    // if data exists
+			    if (snapshot.exists()) {
+			        // get the ref (in this case /users/2) and update its contents
+			        snapshot.ref().update(user);
+			    } else {
+			        // data does not exist so we wrap the data in an object with
+			        // a member named after the uid so we can pass it as an update
+			        // to the parent.
+			        var payload = {};
+			            payload[uid] = user;
+			        // get the ref's parent and call update on it.
+			        snapshot.ref().parent().update(payload);
+			    }
+			});*/
+	</script>
+
+</head>
+
+<body>
+
+	<!--enabling tabs-->	
+	<script language="javascript">
+		$('#myTabs a').click(function (e) {
+		  e.preventDefault()
+		  $(this).tab('show')
+		})
+
+		$('#myTabs a[href="#profile"]').tab('show') // Select tab by name
+		$('#myTabs a:first').tab('show') // Select first tab
+		$('#myTabs a:last').tab('show') // Select last tab
+		$('#myTabs li:eq(2) a').tab('show') // Select third tab (0-indexed)
+
+		$('#someTab').tab('show')
+		
+		$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		  e.target // newly activated tab
+		  e.relatedTarget // previous active tab
+		})
+	</script>
+	<!--end enabling tabs-->
+	
+	<!--Horizontal Nav Bar at Top, credit to http://www.bootply.com/98314-->
+		<nav class="navbar navbar-default" role="navigation">
+		  <div class="navbar-header">
+		    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		      <span class="icon-bar"></span>
+		      <span class="icon-bar"></span>
+		      <span class="icon-bar"></span>
+		    </button>    
+		  </div>
+		  <a class="navbar-brand" href="#">MUMS</a>
+		  <div class="navbar-collapse collapse">
+		    <!--<ul class="nav navbar-nav navbar-left">
+		        <li><a href="#">Left</a></li>
+		        <li><a href="#about">Left</a></li>
+		    </ul>-->
+		    <ul class="nav navbar-nav navbar-right">
+		      <li>
+		      	<a href="#about">
+		      		<span class="glyphicon glyphicon-camera" aria-hidden="true"></span> Start New Test</a>
+		      </li>
+		      <li><a href="#contact"><span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Back To Database</a>
+		      </li>
+		    </ul>
+		  </div>
+		</nav>
+	<!--end nav bar-->
+
+	<!--tab header-->
+	<ul id="mainTabs" style="margin-bottom:20px;" class="nav nav-tabs">
+	  <li class="active"><a data-toggle="tab" href="#home">Overview</a></li>
+	  <li><a data-toggle="tab" href="#results">Results</a></li>
+	  <li><a data-toggle="tab" href="#notes">Notes</a></li>
+	</ul>
+	<!--end tab header-->
+
+	<div class="tab-content">
+		  <div id="home" class="tab-pane fade in active">
+		  
+			<div id="container">
+
+			            <div id="spacer" class="col-sm-1"></div>
+			            <div id="main" >
+			                <div id="profile" class="col-sm-4">
+			                    <div id="photo">
+			                        <img style="width: 200px; "name="photo" src="IMG_1978.png"><br>
+			                    </div>
+
+								<div id="patientTitle">
+									<h2 id="grabName"></h2>
+
+									<script>
+									var patientName = "Jane Doe";/*this will pull from db*/
+									document.getElementById("grabName").innerHTML = patientName;
+									</script>
+
+								</div>
+
+			                    <div id="patientInfo">
+			                      
+			                        <label for="location">Location:</label>
+			                        <p id="location"></p>
+			                        <script>
+										var patientLocation = "Santa Clara, CA";/*this will pull from db*/
+										document.getElementById("location").innerHTML = patientLocation;
+									</script>
+
+			                        <label for="allergies">Allergies:</label>
+			                        <p id="allergies"></p>
+			                        <script>
+										var patientAllergies = "none";/*this will pull from db*/
+										document.getElementById("allergies").innerHTML = patientAllergies;
+									</script>
+
+			                        <label for="diseases">Location:</label>
+			                        <p id="diseases"></p>
+			                        <script>
+										var patientDiseases = "Diabetes";/*this will pull from db*/
+										document.getElementById("diseases").innerHTML = patientDiseases;
+									</script>
+
+			                        <label for="children">Location:</label>
+			                        <p id="children"></p>
+			                        <script>
+										var patientOffspring = "Mimi (8), Joey (2)";/*this will pull from db*/
+										document.getElementById("children").innerHTML = patientOffspring;
+									</script>
+
+			                    </div>  
+			                   
+			                </div>
+			 
+			                <div id="spacer" class="col-sm-1" ></div>
+			                <div id="currentLevels" class="col-sm-5">
+			                     	<!--dropdown lists-->
+			                        <div class="dropdown">
+										<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+										    Current Levels
+										    <span class="caret"></span>
+										</button>
+
+										  	<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+										    <li><a href="#">Date</a></li><!--onclick generate new info-->
+										    <li><a href="#">Date2</a></li>
+										    <li><a href="#">Date3</a></li>
+										    <li role="separator" class="divider"></li>
+										    <li><a href="#">Separated link</a></li>
+										  </ul>
+
+									</div> 
+										<!--end dropdown-->  
+
+			                    <table class="table table-striped">
+								    <tbody>
+								      <tr>
+								        <td>Location</td>
+								        <td>sample</td>
+								        <td>john@example.com</td>
+								      </tr>
+								      <tr>
+								        <td>Mary</td>
+								        <td>Moe</td>
+								        <td>mary@example.com</td>
+								      </tr>
+								      <tr>
+								        <td>July</td>
+								        <td>Dooley</td>
+								        <td>july@example.com</td>
+								      </tr>
+								    </tbody>
+								</table>
+		                       
+			                </div>
+			                <div id="spacer" class="col-sm-1"></div>
+			                
+							<div class="note currentnote"></div> 
+
+			            </div>
+			</div><!--end container div-->
+
+
+
+
+
+
+		 </div><!--end home tab-->
+
+
+
+
+		  <div id="results" class="tab-pane fade">
+		    <h3>Menu 1</h3>
+		    <p>Some content in menu 1.</p>
+		  </div>
+
+
+		  <div id="notes" class="tab-pane fade">
+		    <h3>Menu 2</h3>
+		    <p>Some content in menu 2.</p>
+		  </div>
+	</div><!--end tab content div-->
+
+
+
+</body>
+</html>
